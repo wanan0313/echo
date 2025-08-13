@@ -44,7 +44,7 @@ public class FezCameraController : MonoBehaviour
 
         bool isBackView = viewDirections[currentViewIndex] == new Vector3(0, 0, 1);
         hiddenangles[3].SetActive(isBackView);//后
-
+        
         // 平滑跟随玩家
         Vector3 targetPosition = target.position - viewDirections[currentViewIndex] * 10;
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
@@ -55,6 +55,23 @@ public class FezCameraController : MonoBehaviour
 
     void RotateCamera()
     {
-        // 这里可以添加旋转动画效果
+        GameObject[] tempGround = GameObject.FindGameObjectsWithTag("TempGround");
+        foreach (GameObject go in tempGround)
+        {
+            if (go.GetComponent<DisappearingPlatformA>() != null)
+            {
+                if (go.GetComponent<DisappearingPlatformA>().onPlatform)
+                {
+                    go.GetComponent<DisappearingPlatformA>().Teleport(target.gameObject);
+                }
+            }
+            if (go.GetComponent<TransmitPlatform>() != null)
+            {
+                if (go.GetComponent<TransmitPlatform>().onPlatform)
+                {
+                    go.GetComponent<TransmitPlatform>().Teleport(target.gameObject,currentViewIndex);
+                }
+            }
+        }
     }
 }

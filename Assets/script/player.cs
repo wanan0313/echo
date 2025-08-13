@@ -91,7 +91,6 @@ public class Player : MonoBehaviour
         // Ã¯‘æ ‰»Î£®ø’∏Òº¸£©
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(rb.velocity);
             rb.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
             print("111");
         }
