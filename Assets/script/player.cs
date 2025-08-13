@@ -11,7 +11,12 @@ public class Player : MonoBehaviour
     public float groundCheckDistance = 0.1f;
     public LayerMask groundLayer;
     public Transform groundCheck;
+    [Header("限制区域")]
+    public SphereCollider boundarySphere;
+    public float boundaryOffset = 0.5f; // 与边界的保持距离
 
+    private Vector3 sphereCenter;
+    private float sphereRadius;
     private FezCameraController cameraController;
     public Rigidbody rb;
     private bool isGrounded;
@@ -23,11 +28,17 @@ public class Player : MonoBehaviour
         cameraController = Camera.main.GetComponent<FezCameraController>();
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        if (boundarySphere != null)
+        {
+            sphereCenter = boundarySphere.transform.position;
+            sphereRadius = boundarySphere.radius;
+        }
     }
 
     void Update()
     {
         HandleMovement();
+        ConstrainToSphere();
         HandleJump();
     }
     void HandleMovement()
@@ -39,7 +50,29 @@ public class Player : MonoBehaviour
 
         if (moveDirection.magnitude > 0.1f)
         {
-            transform.Translate(-moveDirection.normalized * speed * Time.deltaTime, Space.World);
+            rb.velocity = new Vector3((-moveDirection * speed).x,rb.velocity.y, (-moveDirection * speed).z);
+            //transform.Translate(-moveDirection.normalized * speed * Time.deltaTime, Space.World);
+        }
+    }
+    void ConstrainToSphere()
+    {
+        if (boundarySphere == null) return;
+
+        Vector3 position = transform.position;
+        Vector3 centerToPlayer = position - sphereCenter;
+        float distance = centerToPlayer.magnitude;
+
+        if (distance > (sphereRadius - boundaryOffset))
+        {
+            // 计算反弹方向
+            Vector3 normal = centerToPlayer.normalized;
+            Vector3 reflectedVelocity = Vector3.Reflect(rb.velocity, normal);
+
+            // 应用反弹
+            rb.velocity = reflectedVelocity * 0.8f; // 减少一些能量
+
+            // 确保玩家在边界内
+            transform.position = sphereCenter + normal * (sphereRadius - boundaryOffset);
         }
     }
     void HandleJump()
@@ -59,7 +92,7 @@ public class Player : MonoBehaviour
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log(rb.velocity);
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            rb.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
             print("111");
         }
     }
