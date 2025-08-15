@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         ConstrainToSphere();
         HandleJump();
         animator.SetBool("iswalking", isWalking);
-        animator.SetBool("isjuming", isJumping);
+        animator.SetBool("isjumping", isJumping);
     }
     void NewMovement()
     {
@@ -113,10 +113,14 @@ public class Player : MonoBehaviour
         //Debug.Log(isGrounded);
 
         // Ã¯‘æ ‰»Î£®ø’∏Òº¸£©
+        if (isGrounded && isJumping)
+        {
+            isJumping = false;
+        }
+
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
-            print("111");
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping = true;
         }
     }

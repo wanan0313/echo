@@ -9,12 +9,8 @@ public class DestroyBall : MonoBehaviour
     public void BallCrash()
     {
 
-        StartCoroutine(waitSecondsBeforeCrash());
-    }
-    IEnumerator waitSecondsBeforeCrash()
-    {
-        yield return new WaitForSeconds(3);
         Instantiate(destroy, transform.position, transform.rotation);
         Destroy(gameObject);
     }
+
 }
