@@ -8,12 +8,19 @@ public class NatualFrequency : MonoBehaviour
     public Slider slider;
     public DestroyBall ball;
     public GameObject smashtext;
+    public int max;
+    public int min;
+    public bool isRandom;
 
     bool inRange;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (isRandom)
+        {
+            max = Random.Range(10, 100);
+            min = max - 10;
+        }
     }
 
     // Update is called once per frame
@@ -25,13 +32,14 @@ public class NatualFrequency : MonoBehaviour
             {
                 Debug.Log(1);
                 ball.BallCrash();
+                smashtext.SetActive(false);
             }
         }
     }
  
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player" && slider.value<40 && slider.value>30)
+        if (other.gameObject.tag == "Player" && slider.value<max && slider.value>min)
         {
             smashtext.SetActive(true);
             inRange = true;

@@ -21,8 +21,7 @@ public class DisappearingPlatformA : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         // 检测是否是玩家从上方碰撞
-        if (collision.gameObject.CompareTag("Player") &&
-            collision.contacts[0].normal.y < -0.5f) // 从上方碰撞
+        if (collision.gameObject.CompareTag("Player")) // 从上方碰撞
         {
             onPlatform = false;
         }
@@ -33,10 +32,11 @@ public class DisappearingPlatformA : MonoBehaviour
         {
             // 获取方块B的位置（可以加上偏移量）
             Vector3 targetPosition = platformA.transform.position;
-            targetPosition.y += player.transform.localScale.y / 2f; // 确保玩家站在方块上
-
+            targetPosition.y += player.transform.localScale.y; // 确保玩家站在方块上
+            Debug.Log(targetPosition);
             // 传送玩家
-            player.transform.position = targetPosition;          
+            player.transform.position = targetPosition;
+            onPlatform = false;
         }
     }
 }

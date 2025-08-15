@@ -15,7 +15,7 @@ public class FezCameraController : MonoBehaviour
         new Vector3(-1, 0, 0)    // ×ó
     };
 
-    [HideInInspector] public int currentViewIndex;
+     public int currentViewIndex;
     private Vector3 velocity = Vector3.zero;
     private void Start()
     {
@@ -62,6 +62,7 @@ public class FezCameraController : MonoBehaviour
             {
                 if (go.GetComponent<DisappearingPlatformA>().onPlatform)
                 {
+                    Debug.Log(go.name);
                     go.GetComponent<DisappearingPlatformA>().Teleport(target.gameObject);
                 }
             }

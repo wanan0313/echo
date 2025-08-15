@@ -13,7 +13,7 @@ public class ScrollWheelSliderControl : MonoBehaviour
     void Update()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log(scroll);
+
         if (scroll != 0 && targetSlider != null)
         {
             // 根据滚轮方向调整Slider值

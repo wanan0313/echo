@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
     public Rigidbody rb;
     private bool isGrounded;
     public Animator animator;
+    private bool isJumping;
+    private bool isWalking;
 
     void Start()
     {
@@ -40,10 +43,31 @@ public class Player : MonoBehaviour
         HandleMovement();
         ConstrainToSphere();
         HandleJump();
+        animator.SetBool("iswalking", isWalking);
+        animator.SetBool("isjuming", isJumping);
     }
+    void NewMovement()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector3(horizontalInput * speed, rb.velocity.y, 0);
+        isWalking = (horizontalInput!=0);
+        if (horizontalInput > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 112, 0);
+        }
+        else if (horizontalInput < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, -112, 0);
+        }
+        }
+    
     void HandleMovement()
     {
-        if (cameraController == null) return;
+        if (cameraController == null)
+        {
+            NewMovement();
+            return;
+        }
 
         // 根据当前视角方向计算移动轴
         Vector3 moveDirection = GetMovementDirection();
@@ -93,6 +117,7 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
             print("111");
+            isJumping = true;
         }
     }
 
@@ -100,7 +125,7 @@ public class Player : MonoBehaviour
     Vector3 GetMovementDirection()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
-        
+        isWalking = (horizontalInput != 0);
         // 根据当前视角方向返回移动向量（修正反向问题）
         switch (cameraController.currentViewIndex)
         {

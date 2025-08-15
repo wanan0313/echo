@@ -24,8 +24,7 @@ public class TransmitPlatform : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         // 检测是否是玩家从上方碰撞
-        if (collision.gameObject.CompareTag("Player") &&
-            collision.contacts[0].normal.y < -0.5f) // 从上方碰撞
+        if (collision.gameObject.CompareTag("Player")) // 从上方碰撞
         {
             onPlatform = false;
         }
@@ -33,25 +32,28 @@ public class TransmitPlatform : MonoBehaviour
     public void Teleport(GameObject player, int targetIndex)
     {
         Debug.Log(targetIndex);
-        if (platformA != null && player != null)
+        if (player != null)
         {
-            if (targetIndex == cameraIndexA)
+            if (targetIndex == cameraIndexA && platformA != null)
             {
-                Debug.Log(111111);
+   
                 // 获取方块B的位置（可以加上偏移量）
                 Vector3 targetPosition = platformA.transform.position;
                 targetPosition.y += player.transform.localScale.y / 2f; // 确保玩家站在方块上
 
                 // 传送玩家
                 player.transform.position = targetPosition;
+                onPlatform = false;
             }
-            else if (targetIndex == cameraIndexB)
+            else if (targetIndex == cameraIndexB && platformB != null)
             {// 获取方块B的位置（可以加上偏移量）
+                if (platformB == null) return;
                 Vector3 targetPosition = platformB.transform.position;
                 targetPosition.y += player.transform.localScale.y / 2f; // 确保玩家站在方块上
 
                 // 传送玩家
                 player.transform.position = targetPosition;
+                onPlatform = false;
             }
 
 
