@@ -11,7 +11,7 @@ public class NatualFrequency : MonoBehaviour
     public int max;
     public int min;
     public bool isRandom;
-
+    bool isdone;
     bool inRange;
     // Start is called before the first frame update
     void Start()
@@ -26,14 +26,13 @@ public class NatualFrequency : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inRange)
+        if (inRange&&!isdone)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
                 Debug.Log(1);
+            isdone = true;
                 ball.BallCrash();
                 smashtext.SetActive(false);
-            }
+            
         }
     }
  

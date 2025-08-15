@@ -8,7 +8,13 @@ public class DestroyBall : MonoBehaviour
     public GameObject destroy;
     public void BallCrash()
     {
-        Instantiate(destroy,transform.position,transform.rotation);
+
+        StartCoroutine(waitSecondsBeforeCrash());
+    }
+    IEnumerator waitSecondsBeforeCrash()
+    {
+        yield return new WaitForSeconds(3);
+        Instantiate(destroy, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

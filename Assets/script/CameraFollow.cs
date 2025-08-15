@@ -7,7 +7,7 @@ using UnityEngine;
 public class BasicCameraFollow : MonoBehaviour
 {
     public Transform player;  // 玩家Transform
-    public Vector3 offset = new Vector3(0, 2, -7);  // 相机偏移量
+    public Vector3 offset = new Vector3(0, 2, -10);  // 相机偏移量
     public float smoothSpeed = 5f;  // 跟随平滑度
 
     void LateUpdate()
